@@ -1,0 +1,120 @@
+﻿@model IEnumerable<Funcion>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Listado de Funciones</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css">
+    <style>
+        body {
+            background: url('/Images/bg.png') no-repeat center center fixed;
+            background-size: cover;
+            font-family: 'Arial', sans-serif;
+            color: #fff;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            margin-top: 20px;
+            background: rgba(30, 30, 30, 0.9);
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 10px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .table {
+            color: #fff;
+        }
+
+            .table th {
+                border-top: none;
+                border-bottom: 1px solid #6c757d;
+            }
+
+            .table td {
+                border-top: none;
+                border-bottom: 1px solid #6c757d;
+            }
+
+            .table th, .table td {
+                vertical-align: middle;
+            }
+
+            .table a {
+                color: #FF3B3B;
+                text-decoration: none;
+                margin-right: 10px;
+            }
+
+                .table a:hover {
+                    color: #9B0B0B;
+                }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Listado de Funciones</h1>
+        <p>
+            <a asp-action="Create" class="btn btn-primary">Crear Nueva</a>
+        </p>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.FirstOrDefault().Fecha)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.FirstOrDefault().Sala)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.FirstOrDefault().Idioma)
+                    </th>
+                    <th>
+                        Película
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.FirstOrDefault().Hora)
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Fecha)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Sala)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Idioma)
+                        </td>
+                        <td>
+                            @item.fPelicula?.Titulo
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Hora)
+                        </td>
+                        <td>
+                            <a asp-action="Edit" asp-route-id="@item.FuncionId">Editar</a> |
+                            <a asp-action="Details" asp-route-id="@item.FuncionId">Detalles</a> |
+                            <a asp-action="Delete" asp-route-id="@item.FuncionId">Eliminar</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

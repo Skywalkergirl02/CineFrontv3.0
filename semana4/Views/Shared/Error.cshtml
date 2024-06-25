@@ -1,0 +1,74 @@
+﻿@model ErrorViewModel
+@{
+    ViewData["Title"] = "Error";
+}
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Error</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css">
+    <style>
+        body {
+            background: url('/Images/bg.png') no-repeat center center fixed;
+            background-size: cover;
+            font-family: 'Arial', sans-serif;
+            color: #fff;
+            margin: 0;
+            padding: 0;
+        }
+
+        .wrapper {
+            margin-top: 20px;
+            background: rgba(30, 30, 30, 0.9);
+            padding: 25px 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 15px rgba(0, 0, 0, 0.2);
+            width: 100%;
+            max-width: 600px;
+            margin-bottom: 50px;
+        }
+
+        .form-title {
+            font-size: 1.5em;
+            font-weight: bold;
+            margin-bottom: 20px;
+            color: #FF3B3B;
+        }
+
+        .text-danger {
+            color: #FF3B3B !important;
+        }
+    </style>
+</head>
+<body>
+    <div class="container d-flex align-items-center justify-content-center min-vh-100">
+        <div class="wrapper">
+            <h1 class="form-title text-danger">Error.</h1>
+            <h2 class="form-title text-danger">Ocurrió un error al procesar su solicitud.</h2>
+
+            @if (Model.ShowRequestId)
+            {
+                <p>
+                    <strong>ID de solicitud:</strong> <code>@Model.RequestId</code>
+                </p>
+            }
+
+            <h3>Modo Desarrollo</h3>
+            <p>
+                Cambiar al entorno <strong>Desarrollo</strong> mostrará información más detallada sobre el error que ocurrió.
+            </p>
+            <p>
+                <strong>No se debe habilitar el entorno de Desarrollo en aplicaciones desplegadas.</strong>
+                Puede resultar en mostrar información sensible desde excepciones a los usuarios finales.
+                Para depurar localmente, habilite el entorno <strong>Desarrollo</strong> configurando la variable de entorno <strong>ASPNETCORE_ENVIRONMENT</strong> a <strong>Development</strong>
+                y reiniciando la aplicación.
+            </p>
+        </div>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

@@ -1,0 +1,181 @@
+﻿@model Pelicula
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewData["Title"]</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css">
+    <style>
+        body {
+            background: url('/Images/bg.png') no-repeat center center fixed;
+            background-size: cover;
+            font-family: 'Arial', sans-serif;
+            color: #fff;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            margin-top: 20px;
+            background: rgba(30, 30, 30, 0.9);
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 10px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .card {
+            background: rgba(30, 30, 30, 0.9);
+            border: none;
+            border-radius: 15px;
+            box-shadow: 0 10px 15px rgba(0, 0, 0, 0.2);
+            color: #fff;
+        }
+
+        .card-header {
+            background-color: transparent;
+            border-bottom: none;
+            color: #9B0B0B;
+        }
+
+        .card-title {
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
+        .card-body {
+            padding: 1.25rem;
+        }
+
+        .list-group-item {
+            background-color: transparent;
+            border: none;
+            color: #fff;
+        }
+
+            .list-group-item strong {
+                color: #9B0B0B;
+            }
+
+        .text-black {
+            color: #000 !important; /* Para casos específicos */
+        }
+
+        .btn-outline-primary {
+            border-color: #fff;
+            color: #fff;
+        }
+
+            .btn-outline-primary:hover {
+                background-color: #fff;
+                color: #000;
+            }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="text-center mb-4">@Model.Titulo</h1>
+
+        <div class="row">
+            <div class="col-md-6">
+                <!-- Información básica de la película -->
+                <ul class="list-group">
+                    <li class="list-group-item">
+                        <strong>Director:</strong> @Model.Director
+                    </li>
+                    <li class="list-group-item">
+                        <strong>Fecha de Lanzamiento:</strong> @Model.FechaDeLanzamiento.ToShortDateString()
+                    </li>
+                    <li class="list-group-item">
+                        <strong>Duración:</strong> @Model.Duracion minutos
+                    </li>
+                    <li class="list-group-item">
+                        <strong>Sinopsis:</strong> @Model.Sinopsis
+                    </li>
+                </ul>
+
+                <!-- Botón de retorno -->
+                <div class="text-center mt-3">
+                    <a asp-action="Index" class="btn btn-outline-primary ml-2">Volver a la cartelera</a>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <!-- Trailer de la película -->
+                <div style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; max-width: 100%;">
+                    @if (!string.IsNullOrWhiteSpace(Model.Trailer))
+                    {
+                        <iframe style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;" src="@GetYouTubeEmbedUrl(Model.Trailer)" allowfullscreen></iframe>
+                    }
+                    else
+                    {
+                        <p class="text-center text-black">Trailer no disponible.</p>
+                    }
+                </div>
+            </div>
+
+            <!-- Lista de funciones de la película -->
+            <div class="col-md-12 mt-4">
+                <h3>Funciones de @Model.Titulo</h3>
+                @if (Model.Funciones != null && Model.Funciones.Any())
+                {
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Fecha</th>
+                                <th>Sala</th>
+                                <th>Idioma</th>
+                                <th>Hora</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var funcion in Model.Funciones)
+                            {
+                                <tr>
+                                    <td>@funcion.Fecha.ToShortDateString()</td>
+                                    <td>@funcion.Sala</td>
+                                    <td>@funcion.Idioma</td>
+                                    <td>@funcion.Hora.ToString("hh\\:mm")</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                }
+                else
+                {
+                    <p>No hay funciones disponibles para esta película.</p>
+                }
+            </div>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+    @functions {
+        public string GetYouTubeEmbedUrl(string videoUrl)
+        {
+            if (videoUrl.Contains("embed"))
+            {
+                return videoUrl;
+            }
+
+            var uri = new Uri(videoUrl);
+            var query = System.Web.HttpUtility.ParseQueryString(uri.Query);
+            var videoId = query["v"];
+
+            if (!string.IsNullOrWhiteSpace(videoId))
+            {
+                return $"https://www.youtube.com/embed/{videoId}";
+            }
+
+            return string.Empty; // Handle invalid URLs
+        }
+    }
+</body>
+</html>
